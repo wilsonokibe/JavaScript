@@ -1,11 +1,17 @@
 "use strict";  
-window.onload = function(){
+window.onload = function(){  
 
-  class User {
+  let user1 = new User('John', 25);
+  let user2 = new User('Mary', 22);
+
+  const result = user1.compare(user2);       
+}
+
+class User {
     constructor(name, age) {
       this.name = name;
       this.age = age;
-    }  
+    } 
                    
     compare(secondUser) { 
       if (this.age > secondUser.age) {
@@ -22,9 +28,3 @@ window.onload = function(){
       }    
     }
   }
-
-  let user1 = new User('John', 25);
-  let user2 = new User('Mary', 22);
-
-  const result = user1.compare(user2);       
-}
