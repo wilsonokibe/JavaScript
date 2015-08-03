@@ -12,14 +12,11 @@ class Welcome {
     let nameIs = 'Hello ';
     let valid = 0;
 
-    //create new object
-    let check = new Welcome();
-
     do {
       let firstName = prompt('Please enter first name');
       
       //call to method validate
-      valid = check.validate(firstName);
+      valid = this.validate(firstName);
 
       if (valid) {
         nameIs += firstName;
@@ -30,7 +27,7 @@ class Welcome {
       let lastName = prompt('Please enter last name');
 
       //second call to method validate
-      valid = check.validate(lastName);
+      valid = this.validate(lastName);
       
       if (valid) {
         nameIs += ' '+lastName;
@@ -38,11 +35,11 @@ class Welcome {
     }while (!valid) 
 
     //call to alert message
-    let alertUser = check.alertMessage(nameIs);
+    let alertUser = this.alertMessage(nameIs);
     if (alertUser) {
 
       //call to print messgae
-      let message = check.printMessage(nameIs);
+      let message = this.printMessage(nameIs);
     }
     return 0; 
   }
