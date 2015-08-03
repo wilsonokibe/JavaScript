@@ -40,4 +40,3 @@ class Check {
     none.addEventListener("click", noneHandler, false);
   }
 }
-
