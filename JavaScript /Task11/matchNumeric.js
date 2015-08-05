@@ -1,40 +1,35 @@
-"use strict";
+"use strict"; 
 
-window.addEventListener("load", function() {
-  const start = new Welcome();
-  start.init();  
-})
-
-class Welcome {
-  constructor() {}
-
+class CheckNumber {
 
   init() {
     const self = this;
     const btn = document.getElementById("myBtn");
-    btn.addEventListener("click", function() {
-      self.validateInput();
+    btn.addEventListener("click", function(event) {
+      self.validateInput(event);
     });
   }
 
-  //gets input from user, checks if empty. if not, sends input for validation
-  validateInput() {
-    const getNumber = document.getElementById("number").value;
+  validateInput(eventValue) {
+    const value = document.getElementById("number").value;
 
-    if (getNumber == '') {
+    if (value == '') {
+      eventValue.preventDefault();
       alert("You did not enter any value. \nPlease enter a number");
     } else {
-        const number = this.isNumeric(getNumber);
-        document.getElementById("result").value = number;
-        if(number) {
-          //this.submitIt();
-        }
+        const isNumber = this.isNumeric(value);
+        document.getElementById("result").value = isNumber;
+        
+        if(isNumber) {
+          //FORM SUBMITS
+        } else {eventValue.preventDefault();}
       }         
   }
 
-  //validates that input is a number
+  //VALIDATE THE INPUT
   isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    let numberRegex = new RegExp(/^-?(\d+|\d{1,3}(\.\d{3})+)(\,(\s)?\d*)?$/g);
+    return numberRegex.test(n);
   }
 
   //submits form
@@ -42,3 +37,6 @@ class Welcome {
     document.getElementById("myForm").submit();
   }
 }
+
+const start = new CheckNumber();
+start.init(); 
