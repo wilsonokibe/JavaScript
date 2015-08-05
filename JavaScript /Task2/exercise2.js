@@ -1,22 +1,14 @@
 "use strict";
 
-window.addEventListener("load", function() {
-  const check = new Check();
-  check.init();  
-})
-
 class Check {
   constructor() {}  
   
-  //checks all if toggle is 1 and uncheck if otherwise                
+  //CHECKS ALL CHECKBOXES IF VALUE IS 1 VICE-VERSA                 
   selectToggle(toggle) {
-    const theForm = document.forms["myForm"];
-    for (let i = 0; i < theForm.length; i++) {
-      if(toggle) {
-        theForm.elements[i].checked = true;
-      }else {
-        theForm.elements[i].checked = false;
-      }
+    const colors = document.getElementsByTagName("input");
+    let counter = 0;
+    for(counter; counter < colors.length; counter++) {
+      colors[counter].checked = toggle;
     }
   }  
 
@@ -24,19 +16,16 @@ class Check {
     const all = document.getElementById("all");
     const none = document.getElementById("none");
 
-    //handler for all click
-    function allHandler() { 
-      const all = new Check();
-      all.selectToggle(1);
-    }
+    let self = this;
+    all.addEventListener('click', function() {
+      self.selectToggle(true);
+    })
 
-    //handler for none click
-    function noneHandler() { 
-      const none = new Check();
-      none.selectToggle(0);
+    none.addEventListener('click', function() {
+      self.selectToggle(false);
     }
-
-    all.addEventListener("click", allHandler, false);
-    none.addEventListener("click", noneHandler, false);
-  }
+  )}
 }
+
+const check = new Check();
+check.init(); 
