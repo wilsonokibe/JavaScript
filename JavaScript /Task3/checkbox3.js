@@ -1,72 +1,67 @@
 "use strict";
 
-window.addEventListener("load", function() {
-  const check = new Check();
-  check.init();  
-})
-
 class Check {
-  constructor(index){
-    this.index = index;
-  }
 
-  init() {       
-    document.getElementById("form1").addEventListener('click', function(e){
-      if(e.target && e.target.nodeName == 'INPUT') {
-        var checker = e.target.id;
-        const checkBox = new Check(checker);
-        checkBox.regulateCheck();
-      }
+  init() {
+    const daysValue = document.getElementsByClassName("day_class");
+    const noneValue = document.getElementsByClassName("none_class");
+    let self = this;
+
+    for(let i = 0; i < daysValue.length; i++) {
+      daysValue[i].addEventListener('click', function() {
+        self.uncheckNone();  
+        self.checkDays(i); 
+      })
+    }
+
+    noneValue[0].addEventListener('click', function() {
+      self.checkNone();
     })
   }
 
-  regulateCheck() {
-    let cnt = 0;
-    let i = 0;
-    let arr = [];
-    const day = document.getElementsByName("day");
-    
-    for( ;i < day.length-1; i++) {
-      if (day[i].checked) {
-        switch (i) {
-          case 0:
-          arr.push("Sunday");
-          break;
-          case 1:
-          arr.push("Monday");
-          break;
-          case 2:
-          arr.push("Tuesday");
-          break;
-          case 3:
-          arr.push("Wednesday");
-          break;
-          case 4:
-          arr.push("Thursday");
-          break;
-          case 5:
-          arr.push("Friday");
-          break;
-          case 6:
-          arr.push("Saturday");
-          default:
-          break;
-        }      
-        cnt += 1;
+  checkDays(i) {
+    const daysValue = document.getElementsByClassName("day_class");
+    let count = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    let dayHolder = '';
+
+    if(count > 3) {
+      daysValue[i].checked = false;
+      count -= 1;
+
+      for(let k = 0; k < daysValue.length; k++ ) {
+        if(daysValue[k].checked == true) {
+          dayHolder =  `${dayHolder} ${this.getCheckedDay(k)}`;
+          dayHolder = `${dayHolder},`;
+        }        
       }
-    }
-    if (cnt > 3 && this.index != 7) {
-      arr.splice(this.index, 1);
-      alert('Only 3 days can be selected.\nYou have already selected '+arr.join(', ')+'.'); 
-      document.getElementById(this.index).checked = false;
-    }
-    else if (this.index == 7) {
-      for (let j = 0; j < day.length-1; j++) {
-        document.getElementById(j).checked = false;
-      }
-    }
-    else {
-      document.getElementById(7).checked = false;
-    }     
+      alert(`You can only select 3 options.\n You have already selected ${dayHolder}`);
+      } 
+  }
+
+  uncheckNone() {
+    const noneValue2 = document.getElementsByClassName("none_class");
+    noneValue2[0].checked = false;
+  }
+
+  checkNone() {
+    const days = document.getElementsByClassName("day_class");
+    for(let i = 0; i < days.length; i++) {
+      days[i].checked = false;
+    }    
+  }
+
+  getCheckedDay(value) {
+    let day = '';
+    if(value == 0) { day = 'Sunday';} 
+    else if(value == 1) { day = 'Monday';}
+    else if(value == 2) { day = 'Tuesday';}
+    else if(value == 3) { day = 'Wednesday';}
+    else if(value == 4) { day = 'Thursday';}
+    else if(value == 5) { day = 'Friday';}
+    else if(value == 6) { day = 'Saturday';}
+    return day;
   }
 }
+
+const check = new Check();
+check.init();
