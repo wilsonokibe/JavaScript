@@ -1,0 +1,29 @@
+#myDiv{
+  height: 100px; 
+  overflow: auto;       
+}
+
+#chckBox1{
+  display: none; 
+  margin-left:20px; 
+  font-size:14px;
+}
+
+#chckBox2{
+  display: none; 
+  margin-left:20px; 
+  font-size:14px;
+}
+
+#chckBox3{
+  display: none; 
+  margin-left:20px; 
+  font-size:14px;
+}
+
+#chckBox4{
+  display: none; 
+  margin-left:20px; 
+  font-size:14px;
+}
+
