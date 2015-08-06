@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise ( Form validation using js) </title>
+    <link rel="stylesheet" type="text/css" href="formvalidation.css">
+  </head>
+
+  <body>
+
+    <form id="myForm">
+      <header>Registration Form</header>
+
+      <div id="content">
+
+        <div class="form-group">
+          <label class="label-field" for="loginId">Login Id</label>
+          <input type="text" name="loginId" id="loginId" class="form-content"> 
+        </div>
+
+        <div class="form-group">
+          <label class="label-field" for="email">Email</label>
+          <input type="text" name="email" id="email" class="form-content"> 
+        </div>
+
+        <div class="form-group">
+          <label class="label-field" for="name">Name</label>
+          <input type="text" name="name" id="name" class="form-content"> 
+        </div>
+
+        <div class="form-group">
+          <label class="label-field" for="timezone">Timezone</label>
+          <select>
+            <option>GMT</option>
+            <option>UTC</option>
+          </select> 
+        </div>
+
+        <div class="form-group">
+          <label class="label-field" for="homePage">Home page</label>
+          <input type="text" name="homePage" id="homePage" class="form-content"> 
+        </div>
+
+        <div class="form-group">
+          <label class="label-field" for="aboutMe">About me</label>
+        </div>
+
+        <div class="form-group">
+          <textarea name="aoutMe" id="aboutMe" rows="10" cols="40"></textarea> 
+        </div>
+
+        <div class="form-group">
+        <input type="checkbox" id="receiveNotification"> <label id="receive">Receive notifications of comments.</label><br>
+        <p id="you">You will be sent an email when someone posts comments to your Blog or Album.</p>
+        <p id="your">Your Password will be mailed to you.<br></p>
+        </div>
+
+        <div id="button">
+          <input type="submit" value="GO" id="myBtn">
+        </div>
+
+        </div>
+      </div>
+    </form> 
+    <script type="text/javascript" src="formvalidation.js"></script>
+  </body>
+</html>
