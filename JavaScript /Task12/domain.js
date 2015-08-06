@@ -26,7 +26,6 @@ class Url {
         else { alert(`The URL entered is not valid. \nPlease enter valid URL.`);}
       }
   }
-
   
   validateUrl(urlValue) {
     let urlregex = new RegExp(
