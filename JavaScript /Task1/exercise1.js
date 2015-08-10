@@ -7,21 +7,20 @@ class User {
   } 
                  
   compare(secondUser) { 
-    let stringHolder = '';
+    let result;
     if (this.age > secondUser.age) {
       stringHolder = `${this.name}  is older than  ${secondUser.name}\n`;
     } 
     else if (this.age < secondUser.age) {
-      stringHolder =`${this.name} is younger than ${secondUser.name}\n`;
-      
+      result =`${this.name} is younger than ${secondUser.name}\n`;      
     } 
     else if (this.age == secondUser.age) {
       stringHolder = `${this.name} is same age as ${secondUser.name}\n`;
     } 
     else {
-      stringHolder = `Nothing to compare`;
+      result = `Nothing to compare`;
     } 
-    return stringHolder;   
+    return result;   
   }
 }
 
