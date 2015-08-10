@@ -3,7 +3,7 @@
   overflow: auto;       
 }
 
-#chckBox1, #chckBox2, #chckBox3, #chckBox4{
+.chck{
   display: none; 
   margin-left:20px; 
   font-size:14px;
