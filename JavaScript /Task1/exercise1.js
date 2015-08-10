@@ -17,9 +17,6 @@ class User {
     else if (this.age == secondUser.age) {
       stringHolder = `${this.name} is same age as ${secondUser.name}\n`;
     } 
-    else {
-      result = `Nothing to compare`;
-    } 
     return result;   
   }
 }
