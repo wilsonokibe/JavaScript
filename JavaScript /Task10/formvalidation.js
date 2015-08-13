@@ -16,23 +16,24 @@ class Validation {
     })
   }
 
-  verifyLoginId(eventValue) {    
-    const loginId = document.getElementById("loginId").value;
-    if(loginId === '' || loginId.match(/^ *$/) !== null) {
+ validateEmptyInput(value, eventValue, message) {
+    if(value == '' || value.match(/^ *$/) !== null) {
       eventValue.preventDefault(); 
-      alert("Login Id cannot be empty.");
-    }
+      alert(message);
+    } else return 1;
   }
 
-  verifyEmail(eventValue) {
+  verifyLoginId(eventValue) {  
+    const loginId = document.getElementById("loginId").value;
+    this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
+  }
+
+  verifyEmail(eventValue) {  
     const email = document.getElementById("email").value;
-    if(email == '' || email.match(/^ *$/) !== null) { 
-      eventValue.preventDefault();
-      alert("Email cannot be empty.");
-    } else {
+    let result = this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
+    if(result) {
       const validEmail = this.validateEmail(email);
-      if(validEmail) {} 
-      else {
+      if(!validEmail) {
         eventValue.preventDefault(); 
         alert("Please enter valid email.");
       }
@@ -40,51 +41,46 @@ class Validation {
   }
 
   verifyName(eventValue) {
-    const name = document.getElementById("name").value;
-    if (name == '' || name.match(/^ *$/) !== null) { 
-      eventValue.preventDefault(); 
-      alert("Name cannot be empty.");
-    }
+    const name = document.getElementById("name").value;    
+    this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
   }
 
-  verifyHomePage(eventValue) {
+  verifyHomePage(eventValue) { 
     const homePage = document.getElementById("homePage").value;
-    if (homePage == '' || homePage.match(/^ *$/) !== null) { 
-      eventValue.preventDefault(); 
-      alert("home page cannot be empty.");
-    } else {
+    let result = this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
+    if(result) {
       const validUrl = this.validateUrl(homePage);
-      if(validUrl) {}
-      else { 
+      if(!validUrl) {
         eventValue.preventDefault(); 
         alert("Please enter valid home page.");
-      }
-    }
+      }   
+    } 
   }
 
   verifyAboutMe(eventValue) {
     const aboutMe = document.getElementById("aboutMe").value;
-    if(aboutMe == '' || aboutMe.match(/^ *$/) !== null) {
-      eventValue.preventDefault(); 
-      alert("Please tell us aboput yourself.\n This field cannot be empty.")
-    } else { 
-      if(aboutMe.length < 50) {
+    let result = this.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
+    if(result) {
+      if(this.checkTextLength(aboutMe)) {
+        this.verifyNotification(eventValue);        
+      } else {  
         eventValue.preventDefault(); 
-        alert("Statement about yourself is too short.\n Kindly ensure that you write more than 50 characters of summary on yourself.")
-      } else if(aboutMe.length > 50) {
-        this.verifyNotification(eventValue);
-      }
+        alert("Statement about yourself is too short.\n Kindly ensure that you write at least 50 characters of summary on yourself.");
+      }    
     }
   }
 
+  checkTextLength(aboutMe) {
+    if(aboutMe.length >= 50){ return true; } 
+    else { return false;}
+  }
+  
   verifyNotification(eventValue) {
     const receiveNotification = document.getElementById("receiveNotification").checked;
     if(receiveNotification == false) {
       eventValue.preventDefault(); 
       alert("Receive notification is not checked.");
-    } else if (receiveNotification == true) {
-      //SUBMITS FORM
-     }
+    } 
   }
 
   validateEmail(email) {
