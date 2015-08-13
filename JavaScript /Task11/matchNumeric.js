@@ -1,6 +1,9 @@
 "use strict"; 
 
 class CheckNumber {
+  constructor() {
+
+  }
 
   init() {
     const self = this;
@@ -20,21 +23,13 @@ class CheckNumber {
         const isNumber = this.isNumeric(value);
         document.getElementById("result").value = isNumber;
         
-        if(isNumber) {
-          //FORM SUBMITS
-        } else {eventValue.preventDefault();}
+        if(!isNumber) {eventValue.preventDefault();}
       }         
   }
 
-  //VALIDATE THE INPUT
   isNumeric(n) {
     let numberRegex = new RegExp(/^-?(\d+|\d{1,3}(\.\d{3})+)(\,(\s)?\d*)?$/g);
     return numberRegex.test(n);
-  }
-
-  //submits form
-  submitIt() {
-    document.getElementById("myForm").submit();
   }
 }
 
