@@ -21,9 +21,9 @@ class Check {
 
     none.addEventListener('click', function() {
       self.selectToggle(false);
-    }
-  )}
+    });
+  }
 }
 
 const check = new Check();
-check.init(); 
+check.init();
