@@ -17,7 +17,7 @@ class Check {
 
     all.addEventListener('click', function() {
       self.selectToggle(true);
-    })
+    });
 
     none.addEventListener('click', function() {
       self.selectToggle(false);
