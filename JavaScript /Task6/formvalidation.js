@@ -25,29 +25,28 @@ class Validation {
 
   verifyLoginId(eventValue) {  
     const loginId = document.getElementById("loginId").value;
-    let result = this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
+    this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
   }
 
   verifyEmail(eventValue) {  
     const email = document.getElementById("email").value;    
-    let result = this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
+    this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
   }
 
   verifyName(eventValue) {
     const name = document.getElementById("name").value;    
-    let result = this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
+    this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
   }
 
   verifyHomePage(eventValue) { 
     const homePage = document.getElementById("homePage").value;
-    let result = this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
+    this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
   }
 
   verifyAboutMe(eventValue) {
     const aboutMe = document.getElementById("aboutMe").value;
     let result = this.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
     if(result) {
-      console.log("result is good");
       if(this.checkTextLength(aboutMe)) {
         this.verifyNotification(eventValue);        
       } else {  
