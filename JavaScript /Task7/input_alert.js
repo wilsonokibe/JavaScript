@@ -17,14 +17,23 @@ class Names {
     return 0; 
   }
 
-  getName(nameIs, kind) {
+  getName(nameIs, nameType) {
     let valid = 0;    
     do {
-      let name = prompt(`Please enter ${kind} name`);   
-      valid = this.validate(name);
-      if (valid) { nameIs += ` ${name}`; }
+      let userValue = this.getPromptResult(nameType);
+      if(userValue != null){   
+        valid = this.validate(userValue);
+        if (valid) {  nameIs += ` ${userValue}`; }        
+        else {  alert(`${nameType}name cannot be empty`); }
+      }
+      else if(userValue == null) {  alert(`You may NOT cancel this request.`); }
     }while (!valid)
     return nameIs;
+  }
+
+  getPromptResult(inputName) {
+    let result = prompt(`Please enter ${inputName} name`);
+    return result;
   }
 
   validate(name) {
@@ -40,8 +49,8 @@ class Names {
     return 1; 
   }
 
-  printMessage(msg) {
-    document.getElementById("welcome").innerHTML = msg;
+  printMessage(message) {
+    document.getElementById("welcome").innerHTML = message;
     return 0;
   }
 }
