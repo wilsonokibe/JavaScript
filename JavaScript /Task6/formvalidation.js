@@ -23,38 +23,33 @@ class Validation {
     } else return 1;
   }
 
-  verifyLoginId(eventValue) {   
-    let self = this; 
+  verifyLoginId(eventValue) {  
     const loginId = document.getElementById("loginId").value;
-    let result = self.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
+    let result = this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
   }
 
-  verifyEmail(eventValue) {   
-    let self = this; 
+  verifyEmail(eventValue) {  
     const email = document.getElementById("email").value;    
-    let result = self.validateEmptyInput(email, eventValue, "Email cannot be empty.");
+    let result = this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
   }
 
-  verifyName(eventValue) {   
-    let self = this; 
+  verifyName(eventValue) {
     const name = document.getElementById("name").value;    
-    let result = self.validateEmptyInput(name, eventValue, "Name cannot be empty.");
+    let result = this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
   }
 
-  verifyHomePage(eventValue) {   
-    let self = this; 
+  verifyHomePage(eventValue) { 
     const homePage = document.getElementById("homePage").value;
-    let result = self.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
+    let result = this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
   }
 
-  verifyAboutMe(eventValue) {   
-    let self = this; 
+  verifyAboutMe(eventValue) {
     const aboutMe = document.getElementById("aboutMe").value;
-    let result = self.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
+    let result = this.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
     if(result) {
       console.log("result is good");
-      if(self.checkTextLength(aboutMe)) {
-        self.verifyNotification(eventValue);        
+      if(this.checkTextLength(aboutMe)) {
+        this.verifyNotification(eventValue);        
       } else {  
         eventValue.preventDefault(); 
         alert("Statement about yourself is too short.\n Kindly ensure that you write at least 50 characters of summary on yourself.");
@@ -67,8 +62,7 @@ class Validation {
     else { return false;}
   }
 
-  verifyNotification(eventValue) {   
-    let self = this; 
+  verifyNotification(eventValue) { 
     const receiveNotification = document.getElementById("receiveNotification").checked;
     if(receiveNotification == false) {
       eventValue.preventDefault(); 
