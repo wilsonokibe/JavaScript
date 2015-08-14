@@ -1,29 +1,34 @@
 "use strict";
 
 class Check {
+  constructor(checkLimit) {
+    this.checkLimit = checkLimit;
+  }
 
   init() {
     const daysElement = document.getElementsByClassName("day");
-    const noneElement = document.getElementsByClassName("none");
+    const noneElement = document.getElementById("none");
     let self = this;
 
     //LISTEN TO CLICK ON DAYS CHECKBOX
     for(let i = 0; i < daysElement.length; i++) {
       daysElement[i].addEventListener('click', function() {
-        self.unCheckNone(noneElement);  
+        if(noneElement.checked == true) { 
+          self.unCheckNone(noneElement); 
+        } 
         self.checkDaysLimit(i, daysElement); 
       })
     }
 
     //LISTEN TO CLICK ON NONE CHECKBOX
-    noneElement[0].addEventListener('click', function() {
+    noneElement.addEventListener('click', function() {
       self.unCheckDays(daysElement);
     })
   }
 
   checkDaysLimit(i, daysElement) {
-    let count = document.querySelectorAll('input[type="checkbox"]:checked').length; 
-    if(count > 3) {
+    let count = document.querySelectorAll('.day:checked').length; 
+    if(count > this.checkLimit) {
       daysElement[i].checked = false;
       count -= 1;
       this.getCheckedDays(daysElement);
@@ -31,7 +36,7 @@ class Check {
   }
 
   unCheckNone(noneElement) {
-    noneElement[0].checked = false;
+    noneElement.checked = false;
   }
 
   unCheckDays(daysElement) {
@@ -52,9 +57,9 @@ class Check {
 
   displayMessage(days) {
     let dayHolder = days.join(', ');
-    alert(`You can only select 3 options.\n You have already selected ${dayHolder}`);
+    alert(`You can only select ${this.checkLimit} options.\n You have already selected ${dayHolder}`);
   }
 }
 
-const check = new Check();
+const check = new Check(3);
 check.init();
