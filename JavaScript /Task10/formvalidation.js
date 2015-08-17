@@ -1,87 +1,107 @@
 "use strict";  
 
 class Validation {
-  constructor(button) {
-    this.button = button;
-  }
 
   init(){
     let self = this;
-    this.button.addEventListener("click", function(event){
-      self.verifyLoginId(event);
-      self.verifyEmail(event);
-      self.verifyName(event);
-      self.verifyHomePage(event);
-      self.verifyAboutMe(event);
-    })
-  }
+    this.errorMessage;
+    let form = document.getElementById("myForm");
+    form.addEventListener("submit", function(e){
+      self.verifyLoginId();
+      self.verifyEmail();
+      self.verifyName();
+      self.verifyHomePage();
+      self.verifyAboutMe();
+      self.verifyNotification();
 
- validateEmptyInput(value, eventValue, message) {
-    if(value == '' || value.match(/^ *$/) !== null) {
-      eventValue.preventDefault(); 
-      alert(message);
-    } else return 1;
-  }
-
-  verifyLoginId(eventValue) {  
-    const loginId = document.getElementById("loginId").value;
-    this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
-  }
-
-  verifyEmail(eventValue) {  
-    const email = document.getElementById("email").value;
-    let result = this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
-    if(result) {
-      const validEmail = this.validateEmail(email);
-      if(!validEmail) {
-        eventValue.preventDefault(); 
-        alert("Please enter valid email.");
+      if(self.errorMessage) {
+        e.preventDefault();
       }
+      self.errorMessage = "";
+    });
+  }
+
+  verifyLoginId() {
+    this.validateEmptyInputField("loginId", "Login Id cannot be empty");
+  }
+
+  verifyEmail() {
+    this.validateEmptyInputField("email", "Email cannot be empty");  
+    this.verifyEmailFormat("email"); 
+  }
+
+  verifyEmailFormat(inputId) {
+    let email = document.getElementById(inputId).value;
+    if(!this.validateEmail(email))  {
+      alert(this.errorMessage = "Email is invalid");
     }
   }
 
-  verifyName(eventValue) {
-    const name = document.getElementById("name").value;    
-    this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
+  verifyName() {
+    this.validateEmptyInputField("name", "Name cannot be empty");
   }
 
-  verifyHomePage(eventValue) { 
-    const homePage = document.getElementById("homePage").value;
-    let result = this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
-    if(result) {
-      const validUrl = this.validateUrl(homePage);
-      if(!validUrl) {
-        eventValue.preventDefault(); 
-        alert("Please enter valid home page.");
-      }   
+  verifyHomePage() {
+    this.validateEmptyInputField("homePage", "Home page cannot be empty");    
+    this.verifyHomePageFormat("homepage");
+  }
+
+  verifyHomePageFormat(inputId) {
+    let homePage = document.getElementById(inputId).value;
+    if(!this.validateUrl(homePage)) {
+      alert(this.errorMessage = "URL is invalid.");
+    }
+  }
+
+  verifyAboutMe() {
+    this.validateEmptyInputField("aboutMe", "About me field cannot be empty");
+    this.validateInputLength("aboutMe", "Cannot be less than 50");
+  }
+
+  verifyNotification() { 
+    const receiveNotification = document.getElementById("receiveNotification");
+    if(!receiveNotification.checked) {
+      alert(this.errorMessage = "Receive notification is not checked.");
     } 
-  }
-
-  verifyAboutMe(eventValue) {
-    const aboutMe = document.getElementById("aboutMe").value;
-    let result = this.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
-    if(result) {
-      if(this.checkTextLength(aboutMe)) {
-        this.verifyNotification(eventValue);        
-      } else {  
-        eventValue.preventDefault(); 
-        alert("Statement about yourself is too short.\n Kindly ensure that you write at least 50 characters of summary on yourself.");
-      }    
-    }
-  }
-
-  checkTextLength(aboutMe) {
-    if(aboutMe.length >= 50){ return true; } 
-    else { return false;}
   }
   
   verifyNotification(eventValue) {
     const receiveNotification = document.getElementById("receiveNotification").checked;
     if(receiveNotification == false) {
       eventValue.preventDefault(); 
-      alert("Receive notification is not checked.");
+      alert(this.errorMessage = "Receive notification is not checked.");
     } 
   }
+
+
+  validateInputLength(inputId, errorMessage) {
+    let inputField = document.getElementById(inputId);
+    if(!this.isMinLength(inputField.value, 50)) {
+      alert(this.errorMessage = errorMessage);
+    }
+  }
+
+  validateEmptyInputField(inputId, errorMessage) {
+    let inputField = document.getElementById(inputId);
+    if(this.isEmpty(inputField.value)) {
+      alert(this.errorMessage = errorMessage);
+    }
+  }
+
+  isEmpty(value)  {
+    if(value == null || value.trim() == '') {
+      return true;
+    }
+    return false;
+  }
+
+  isMinLength(value, length) {
+    if(value.length >= length) {
+      return true;
+    }
+    return false;
+  }
+
 
   validateEmail(email) {
     const emailRegEx = new RegExp(/^([a-z0-9_\.-]+\@[\da-z\.-]+\.[a-z\.]{2,6})$/gm);
@@ -95,6 +115,5 @@ class Validation {
   }
 }
 
-const btn = document.getElementById("myBtn");
-const formValidation = new Validation(btn);
+const formValidation = new Validation();
 formValidation.init();
