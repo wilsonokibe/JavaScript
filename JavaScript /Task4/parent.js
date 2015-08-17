@@ -11,53 +11,38 @@ class CheckBox {
     let self = this;
     for(let i = 0; i < parentCheckBox.length; i++) {     
       parentCheckBox[i].addEventListener("click", function() {         
-        self.hideOrSHowChildren(i, parentCheckBox) ;        
+        self.respondToClick(i, parentCheckBox[i]) ;        
       })
     }
-  }  
-
-  hideOrSHowChildren(i, parentCheckBox) {
-    let self = this;
-    self.checkParent(parentCheckBox, i)
   }
 
-  checkParent(parentCheckBox, i) {
-    let self = this; 
-    let value = true;   
-
-    if(parentCheckBox[i].checked == true) {
-      let show = "block";
-      self.actionForChecked(value, show, i);
-      parentCheckBox[i].scrollIntoView();
-    }else {
-      let show = "none";
-      let value = false;
-      self.actionForChecked(value, show, i);
+  respondToClick(i, parentCheckBox) {
+    if(parentCheckBox.checked) {
+      this.hideOrShowChildren(true, "block", i);
+      parentCheckBox.scrollIntoView();
+    } else {
+      this.hideOrShowChildren(false, "none", i);
     }
   }
 
-  actionForChecked(value, show, i) {
-    let self = this; 
-    const divElement = self.getParentCheckBox(i); 
-    const divChildren = self.getChildrenCheckBox(divElement); 
-    divElement.style.display = show;
-    
-    for(let k = 0; k < divChildren.length; k++) {
-      if(divChildren[k].type == 'checkbox') {
-        divChildren[k].checked = value;
+  hideOrShowChildren(checkStatus, display, i) {
+    const childrenContainer = this.getChildrenContainer(i);
+    const children = childrenContainer.getElementsByTagName("input"); 
+    childrenContainer.style.display = display;
+    this.unCheckChildren(children, checkStatus)
+  }
+
+  unCheckChildren(children, checkStatus) {
+    for(let k = 0; k < children.length; k++) {
+      if(children[k].type == 'checkbox') {
+        children[k].checked = checkStatus;
       } 
     }
   }
 
-  getParentCheckBox(i) {
-    const divElement = document.getElementById(`chckBox${i+1}`);
-    return divElement;
-  }
-
-  getChildrenCheckBox(divElement) {    
-    const divChildren = divElement.getElementsByTagName("input"); 
-    return divChildren;
-  }  
+  getChildrenContainer(i) {
+    return document.getElementById(`chckBox${i+1}`);
+  } 
 }
 
 const newParentChild = new CheckBox();
