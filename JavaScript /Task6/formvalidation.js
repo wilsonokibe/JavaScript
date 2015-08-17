@@ -1,74 +1,82 @@
 "use strict";  
 
 class Validation {  
-  constructor(myBtn) {    
-    this.btn = document.getElementById("myBtn");
-  }
 
   init(){
     let self = this;
-    this.btn.addEventListener("click", function(event){
-      self.verifyLoginId(event);
-      self.verifyEmail(event);
-      self.verifyName(event);
-      self.verifyHomePage(event);
-      self.verifyAboutMe(event);
-    })
+    this.errorMessage;
+    let form = document.getElementById("myForm");
+    form.addEventListener("submit", function(e){
+      self.verifyLoginId();
+      self.verifyEmail();
+      self.verifyName();
+      self.verifyHomePage();
+      self.verifyAboutMe();
+      self.verifyNotification();
+
+      if(self.errorMessage) {
+        e.preventDefault();
+      }
+      self.errorMessage = "";
+    });
   }
 
-  validateEmptyInput(value, eventValue, message) {
-    if(value == '' || value.match(/^ *$/) !== null) {
-      eventValue.preventDefault(); 
-      alert(message);
-    } else return 1;
+  verifyLoginId() {
+    this.validateEmptyInputField("loginId", "Login Id cannot be empty");
   }
 
-  verifyLoginId(eventValue) {  
-    const loginId = document.getElementById("loginId").value;
-    this.validateEmptyInput(loginId, eventValue, "Login Id cannot be empty.");    
+  verifyEmail() {
+    this.validateEmptyInputField("email", "Email cannot be empty");
   }
 
-  verifyEmail(eventValue) {  
-    const email = document.getElementById("email").value;    
-    this.validateEmptyInput(email, eventValue, "Email cannot be empty.");
+  verifyName() {
+    this.validateEmptyInputField("name", "Name cannot be empty");
   }
 
-  verifyName(eventValue) {
-    const name = document.getElementById("name").value;    
-    this.validateEmptyInput(name, eventValue, "Name cannot be empty.");
+  verifyHomePage() {
+    this.validateEmptyInputField("home-page", "Home page cannot be empty");
   }
 
-  verifyHomePage(eventValue) { 
-    const homePage = document.getElementById("homePage").value;
-    this.validateEmptyInput(homePage, eventValue, "home page cannot be empty.");
+  verifyAboutMe() {
+    this.validateEmptyInputField("aboutMe", "About me field cannot be empty");
+    this.validateInputLength("aboutMe", "Cannot be less than 50");
   }
 
-  verifyAboutMe(eventValue) {
-    const aboutMe = document.getElementById("aboutMe").value;
-    let result = this.validateEmptyInput(aboutMe, eventValue, "Please tell us about yourself.\n This field cannot be empty.");
-    if(result) {
-      if(this.checkTextLength(aboutMe)) {
-        this.verifyNotification(eventValue);        
-      } else {  
-        eventValue.preventDefault(); 
-        alert("Statement about yourself is too short.\n Kindly ensure that you write at least 50 characters of summary on yourself.");
-      }    
+  verifyNotification() { 
+    const receiveNotification = document.getElementById("receiveNotification");
+    if(!receiveNotification.checked) {
+      alert(this.errorMessage = "Receive notification is not checked.");
+    } 
+  }
+
+  validateInputLength(inputId, errorMessage) {
+    let inputField = document.getElementById(inputId);
+    if(!this.isMinLength(inputField.value, 50)) {
+      alert(this.errorMessage = errorMessage);
     }
   }
 
-  checkTextLength(aboutMe) {
-    if(aboutMe.length >= 50){ return true; } 
-    else { return false;}
+  validateEmptyInputField(inputId, errorMessage) {
+    let inputField = document.getElementById(inputId)
+    if (this.isEmpty(inputField.value)) {
+      alert(this.errorMessage = errorMessage);
+    }
   }
 
-  verifyNotification(eventValue) { 
-    const receiveNotification = document.getElementById("receiveNotification").checked;
-    if(receiveNotification == false) {
-      eventValue.preventDefault(); 
-      alert("Receive notification is not checked.");
-    } 
+  isEmpty(value) {
+    if(value == null || value.trim() == '') {
+      return true;
+    }
+    return false;
   }
+
+  isMinLength(value, length) {
+    if(value.length >= length) {
+      return true;
+    }
+    return false;
+  }  
 }
 
-const formValidation = new Validation(myBtn);
+const formValidation = new Validation();
 formValidation.init();
