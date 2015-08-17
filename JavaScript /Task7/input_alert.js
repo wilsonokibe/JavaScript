@@ -13,8 +13,7 @@ class Names {
     let alertUser = this.alertMessage(nameIs);
     if (alertUser) {
       let message = this.printMessage(nameIs);
-    }
-    return 0; 
+    } 
   }
 
   getName(nameIs, nameType) {
@@ -39,19 +38,67 @@ class Names {
   validate(name) {
     if (name != '' || name.match(/^ *$/) !== null) {
       if (name.match(/^[a-zA-Z]+$/)) {
-        return 1;
-      }else { return 0;}
-    }else {return 0;}
+        return true;
+      }else { return false;}
+    }else {return false;}
   }
 
   alertMessage(message) {
     alert(message);
-    return 1; 
+    return true; 
   }
 
   printMessage(message) {
     document.getElementById("welcome").innerHTML = message;
-    return 0;
+    return false;
+  }
+}
+
+const newName = new Names();
+newName.init();
+
+
+
+
+
+
+
+ "use strict";
+
+class Names {
+
+  init() {
+    this.getName();
+  }
+
+  getName() {
+    let firstName = '';
+    let lastName = '';
+    do {
+      firstName = this.getPromptResult('first');
+    } while (this.isEmpty(firstName));
+
+    do {
+      lastName = this.getPromptResult('last');
+    } while (this.isEmpty(lastName));
+  
+    this.displayMessage(firstName, lastName);
+  }
+
+  getPromptResult(inputName) {
+    let result = prompt(`Please enter ${inputName} name`);
+    return result;
+  }
+
+  isEmpty(value) {
+    if (value == null || value.trim() == '') {
+      return true;
+    }
+    return false;
+  }
+
+  displayMessage(firstName, secondName) {
+    alert(`Hello ${firstName} ${secondName}`);
   }
 }
 
