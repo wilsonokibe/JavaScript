@@ -35,7 +35,7 @@ class CheckNumber {
   }
 
   isNumeric(n) {
-    let numberRegex = new RegExp(/^-?\d+\.?\d*$/g);
+    let numberRegex = new RegExp(/^-?\d*\.?\d+$/);
     return numberRegex.test(n);
   }
 }
