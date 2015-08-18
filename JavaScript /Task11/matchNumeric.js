@@ -1,9 +1,6 @@
 "use strict"; 
 
 class CheckNumber {
-  constructor() {
-
-  }
 
   init() {
     const self = this;
@@ -13,22 +10,32 @@ class CheckNumber {
     });
   }
 
-  validateInput(eventValue) {
+  validateInput(event) {
     const value = document.getElementById("number").value;
 
-    if (value == '') {
-      eventValue.preventDefault();
+    if (this.isEmpty(value)) {
+      event.preventDefault();
       alert("You did not enter any value. \nPlease enter a number");
     } else {
-        const isNumber = this.isNumeric(value);
-        document.getElementById("result").value = isNumber;
-        
-        if(!isNumber) {eventValue.preventDefault();}
+        if(!this.isValueNumber(value)) {event.preventDefault();}
       }         
   }
 
+  isValueNumber(value) {
+    const isNumber = this.isNumeric(value);
+    document.getElementById("result").value = isNumber;
+    return isNumber;        
+  }
+
+  isEmpty(value)  {
+    if(value == null || value.trim() == '') {
+      return true;
+    }
+    return false;
+  }
+
   isNumeric(n) {
-    let numberRegex = new RegExp(/^-?(\d+|\d{1,3}(\.\d{3})+)(\,(\s)?\d*)?$/g);
+    let numberRegex = new RegExp(/^-?\d+\.?\d*$/g);
     return numberRegex.test(n);
   }
 }
