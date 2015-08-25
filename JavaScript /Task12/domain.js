@@ -12,14 +12,14 @@ class Url {
 
   getUrl() {
     const urlValue = document.getElementById("urlInput").value;
-    if (urlValue == '' || urlValue.match(/^ *$/) !== null) {
+    if(urlValue == null || urlValue.trim() == '') {
       alert(`You have not entered URL.\n Please enter URL.`);
     } else {      
         let validUrl = this.validateUrl(urlValue);
         if(validUrl) {
           const domainName = this.getDomain(urlValue);
-          const subDomainName = this.getSubDomain(urlValue);
-          if (subDomainName) { alert(`Domain: ${domainName}\nSub-Domain: ${subDomainName}`); } 
+          
+          if (this.subDomain != null) { alert(`Domain: ${domainName}\nSub-Domain: ${this.subDomain}`); } 
           else {alert(`Domain: ${domainName}`); }
         } 
         else { alert(`The URL entered is not valid. \nPlease enter valid URL.`);}
@@ -32,54 +32,36 @@ class Url {
     return urlregex.test(urlValue);
   }
 
-  getHostName(urlValue) {
-    let domainRegex = new RegExp(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-    let match = urlValue.match(domainRegex);
-
-    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) { return(match[2]); } 
-    else { return null; }
-  }
-
   getDomain(url) {
     const hostName = this.getHostName(url);
     let domain = hostName;
-    
+    this.subDomain = null;    
     if (hostName != null) {
-      let parts = hostName.split('.').reverse();
-        
+      let parts = hostName.split('.').reverse();        
       if (parts != null && parts.length > 1) {
         domain = `${parts[1]}.${parts[0]}`;            
         if (hostName.toLowerCase().indexOf('.co.uk') != -1 && parts.length > 2) {
           domain = `${parts[2]}.${domain}`;
+          if(parts[3]) {
+            this.subDomain = parts[3];
+          }
         }
+        else if(parts.length > 2){
+          this.subDomain = parts[2];          
+        } 
       }
     }    
     return domain;
   }
 
-  getSubDomain(url) { 
-    let subDomain = url;
-    subDomain = subDomain.replace(new RegExp(/^\s+/),""); // START
-    subDomain = subDomain.replace(new RegExp(/\s+$/),""); // END
-     
-    subDomain = subDomain.replace(new RegExp(/\\/g),"/"); //REPLACE \ WITH /
 
-    subDomain = subDomain.replace(new RegExp(/^http\:\/\/|^https\:\/\/|^ftp\:\/\//i),"");
-    subDomain = subDomain.replace(new RegExp(/^www\./i),"");
-    subDomain = subDomain.replace(new RegExp(/\/(.*)/),"");
+  getHostName(urlValue) {
+    let domainRegex = new RegExp(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+    let match = urlValue.match(domainRegex);
 
-    if (subDomain.match(new RegExp(/\.[a-z]{2,3}\.[a-z]{2}$/i))) {
-      subDomain = subDomain.replace(new RegExp(/\.[a-z]{2,3}\.[a-z]{2}$/i),"");     
-    } else if (subDomain.match(new RegExp(/\.[a-z]{2,4}$/i))) {
-      subDomain = subDomain.replace(new RegExp(/\.[a-z]{2,4}$/i),""); 
-    }
-     
-    let subDomainStatues = (subDomain.match(new RegExp(/\./g))) ? true : false;
-
-    if (subDomainStatues) {
-      subDomain = subDomain.replace(new RegExp(/\.[a-z]{2,}$/i),"");
-      return subDomain;   
-    } else {return null;}     
+    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) { 
+      return(match[2]); 
+    } else { return null; }
   }
 }
 
