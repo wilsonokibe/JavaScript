@@ -54,7 +54,6 @@ class Url {
     return domain;
   }
 
-
   getHostName(urlValue) {
     let domainRegex = new RegExp(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
     let match = urlValue.match(domainRegex);
