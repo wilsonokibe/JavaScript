@@ -1,68 +1,95 @@
-"use strict"; 
+"use strict";
 
-class Url {
+class Domain{
 
   init() {
-    self = this;
-    const btn = document.getElementById("myBtn");
-    btn.addEventListener("click", function() {
-      self.getUrl();
-    })
+    let myButton = document.getElementById("myBtn");
+
+    myButton.addEventListener('click', function() {
+      const inputValue = this.getInputValue(); 
+      this.validateInput(inputValue);        
+    }.bind(this));
   }
 
-  getUrl() {
-    const urlValue = document.getElementById("urlInput").value;
-    if(urlValue == null || urlValue.trim() == '') {
-      alert(`You have not entered URL.\n Please enter URL.`);
-    } else {      
-        let validUrl = this.validateUrl(urlValue);
-        if(validUrl) {
-          const domainName = this.getDomain(urlValue);
-          
-          if (this.subDomain != null) { alert(`Domain: ${domainName}\nSub-Domain: ${this.subDomain}`); } 
-          else {alert(`Domain: ${domainName}`); }
-        } 
-        else { alert(`The URL entered is not valid. \nPlease enter valid URL.`);}
-      }
-  }
-  
-  validateUrl(urlValue) {
-    let urlregex = new RegExp(
-      "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
-    return urlregex.test(urlValue);
+  getInputValue() {
+    const inputValue = document.getElementById("urlInput").value;
+    return inputValue;
   }
 
-  getDomain(url) {
-    const hostName = this.getHostName(url);
-    let domain = hostName;
-    this.subDomain = null;    
-    if (hostName != null) {
-      let parts = hostName.split('.').reverse();        
-      if (parts != null && parts.length > 1) {
-        domain = `${parts[1]}.${parts[0]}`;            
-        if (hostName.toLowerCase().indexOf('.co.uk') != -1 && parts.length > 2) {
-          domain = `${parts[2]}.${domain}`;
-          if(parts[3]) {
-            this.subDomain = parts[3];
+  validateInput(inputValue) {
+    const isEmpty = this.isEmptyInput(inputValue);
+
+    if(isEmpty) {
+        this.alertPrompt(`Please enter URL.`);
+      } else {
+          if(this.validateUrl(inputValue)) {
+            this.getDomainAndSubDomain();
+          } else {
+              this.alertPrompt(`Please enter valid URL`);
           }
-        }
-        else if(parts.length > 2){
-          this.subDomain = parts[2];          
-        } 
       }
-    }    
-    return domain;
   }
 
-  getHostName(urlValue) {
-    let domainRegex = new RegExp(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-    let match = urlValue.match(domainRegex);
+  isEmptyInput(inputValue) {
+    if(inputValue == null || inputValue.trim() == '') {
+      return true;
+    }
+    return false;
+  }
 
-    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) { 
-      return(match[2]); 
-    } else { return null; }
+  validateUrl(urlInput) {
+    const pattern =/^(?:http|https|ftp)\:\/\/([a-z0-9]*\.?[a-z0-9]*\.\w{2,3}(\.?\w{2,3})?)(\/\w+(?:\/|\?)\w+(?:\/|\?)?(?:[a-z0-9])*(?:\/|\=)?)?.*/gmi;
+
+    const value = pattern.test(urlInput);
+    pattern.lastIndex = 0;
+    this.match = pattern.exec(urlInput);   
+
+    return value; 
+  }
+
+  alertPrompt(message) {
+    alert(`${message}`);
+  }
+
+  getDomainAndSubDomain() {
+    const parts = this.match[1].split('.').reverse();    
+    let domain = `${parts[1]}.${parts[0]}`;
+
+    if(this.match[1].toLowerCase().indexOf('co.uk') != -1 || this.match[1].toLowerCase().indexOf('com.ng') != -1 && this.match[1].length > 2) {
+      domain = `${parts[2]}.${domain}`;
+    }
+
+    const subDomain = this.getSubDomain();
+    console.log(subDomain);
+    if(subDomain) {      
+      this.alertPrompt(`Domain: ${domain} \n${subDomain}`);
+    } else {
+        this.alertPrompt(`Domain: ${domain}`);
+    }
+  }
+
+  getSubDomain() {
+    let subDomain = null;
+    const parts = this.match[1].split('.').reverse(); 
+
+    if(parts[2] != 'www' && parts[2] != 'WWW' && this.match[1].length > 2) {
+      subDomain = `${parts[2]}`;
+    }
+    else if(parts[3] != 'www' && parts[2] != 'WWW' && this.match[1].toLowerCase().indexOf('co.uk') != -1 || 
+      this.match[1].toLowerCase().indexOf('com.ng') != -1 && this.match[1].length > 3) {
+      subDomain = `${parts[3]}`;
+    }
+
+    if(subDomain != null && subDomain != '' && subDomain != 'undefined' ) {
+      return `Sub-Domain: ${subDomain}`;
+    }
+    else {
+      //return `No Sub-Domain`;
+    }
+    //console.log(`${subDomain}`);
+    //return `Sub-Domain: `;
   }
 }
 
-const newObject = new Url();
-newObject.init();
+const domain = new Domain();
+domain.init();
