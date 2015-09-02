@@ -60,7 +60,6 @@ class Domain{
     }
 
     const subDomain = this.getSubDomain();
-    console.log(subDomain);
     if(subDomain) {      
       this.alertPrompt(`Domain: ${domain} \n${subDomain}`);
     } else {
