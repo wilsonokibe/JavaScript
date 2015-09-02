@@ -83,11 +83,6 @@ class Domain{
     if(subDomain != null && subDomain != '' && subDomain != 'undefined' ) {
       return `Sub-Domain: ${subDomain}`;
     }
-    else {
-      //return `No Sub-Domain`;
-    }
-    //console.log(`${subDomain}`);
-    //return `Sub-Domain: `;
   }
 }
 
